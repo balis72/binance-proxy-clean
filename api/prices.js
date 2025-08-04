@@ -1,23 +1,23 @@
 export default async function handler(req, res) {
-  const url = req.query.url;
+  const symbol = req.query.symbol;
 
-  if (!url) {
-    return res.status(400).json({ error: 'Missing url parameter' });
+  if (!symbol) {
+    return res.status(400).json({ error: "Missing symbol parameter" });
   }
+
+  const url = `https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`;
 
   try {
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0'
-      }
-    });
+    const response = await fetch(url);
+    const data = await response.json();
 
-    const data = await response.text();
+    if (data.code || data.msg) {
+      return res.status(500).json({ error: "Binance error", details: data });
+    }
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).send(data);
+    return res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: "Fetch failed", details: error.message });
   }
 }
+
