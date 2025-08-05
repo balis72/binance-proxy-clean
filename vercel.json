@@ -5,12 +5,20 @@
     {
       "src": "api/prices.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/binance.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/prices",
       "dest": "api/prices.js"
+    },
+    {
+      "src": "/api/binance",
+      "dest": "api/binance.js"
     }
   ]
 }
