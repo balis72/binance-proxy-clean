@@ -1,4 +1,4 @@
-// Force redeploy
+
 export default async function handler(req, res) {
   const { endpoint, ...params } = req.query;
 
